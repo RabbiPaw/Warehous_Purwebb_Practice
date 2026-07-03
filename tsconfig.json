@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",           // Как подключать модули
+    "declaration": true,            // Создавать .d.ts файлы
+    "removeComments": true,          // Удалять комментарии при сборке
+    "emitDecoratorMetadata": true,   // Нужно для NestJS
+    "experimentalDecorators": true,  // Нужно для NestJS (декораторы @Get, @Post)
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2022",              // Какая версия JavaScript
+    "sourceMap": true,               // Для отладки
+    "outDir": "./dist",              // Куда собирать
+    "baseUrl": "./",                 // Относительно чего искать файлы
+    "incremental": true,
+    "skipLibCheck": true,
+    "strict": true,                  // Строгий режим (хорошо ловит ошибки)
+    "strictNullChecks": true,
+    "strictPropertyInitialization": false,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "paths": {
+      "@/*": ["src/*"],              // Сокращения для импортов
+      "@common/*": ["src/common/*"],
+      "@modules/*": ["src/modules/*"],
+      "@database/*": ["src/database/*"],
+      "@config/*": ["src/config/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
