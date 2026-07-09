@@ -13,6 +13,9 @@ export interface Database {
   userWarehouses: UserWarehousesTable;
 }
 
+// ============================================
+// Users
+// ============================================
 export interface UsersTable {
   id: string;
   email: string;
@@ -22,40 +25,53 @@ export interface UsersTable {
   patronymic: string | null;
   roleId: string;
   isActive: boolean;
-  lastLoginAt: ColumnType<Date, Date | null, Date | null>;
-  createdAt: ColumnType<Date, Date | null, never>;
-  updatedAt: ColumnType<Date, Date | null, Date | null>;
+  lastLoginAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
+// ============================================
+// Roles (createdAt, updatedAt - DEFAULT в БД)
+// ============================================
 export interface RolesTable {
   id: string;
   name: string;
   description: string | null;
   sortOrder: number | null;
   isActive: boolean;
-  createdAt: ColumnType<Date, Date | null, never>;
-  updatedAt: ColumnType<Date, Date | null, Date | null>;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
+// ============================================
+// Products (createdAt, updatedAt - DEFAULT в БД)
+// ============================================
 export interface ProductsTable {
   id: string;
   name: string;
   description: string | null;
   unitId: string;
-  createdAt: ColumnType<Date, Date | null, never>;
-  updatedAt: ColumnType<Date, Date | null, Date | null>;
+  isActive: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
+// ============================================
+// Suppliers (createdAt, updatedAt - DEFAULT в БД)
+// ============================================
 export interface SuppliersTable {
   id: string;
   name: string;
   inn: string;
-  isActive: boolean;
   contact: string | null;
-  createdAt: ColumnType<Date, Date | null, never>;
-  updatedAt: ColumnType<Date, Date | null, Date | null>;
+  isActive: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
+// ============================================
+// Distributions (createdAt, updatedAt - DEFAULT в БД)
+// ============================================
 export interface DistributionsTable {
   id: string;
   userId: string;
@@ -63,14 +79,17 @@ export interface DistributionsTable {
   productId: string;
   supplierId: string;
   warehouseId: string;
-  distributionDate: ColumnType<Date, Date, never>;
+  distributionDate: Date;
   quantity: number;
   unitId: string;
   description: string | null;
-  createdAt: ColumnType<Date, Date | null, never>;
-  updatedAt: ColumnType<Date, Date | null, Date | null>;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
+// ============================================
+// Distribution Types (createdAt, updatedAt - DEFAULT в БД)
+// ============================================
 export interface DistributionTypesTable {
   id: string;
   name: string;
@@ -78,10 +97,13 @@ export interface DistributionTypesTable {
   sign: number;
   sortOrder: number | null;
   isActive: boolean;
-  createdAt: ColumnType<Date, Date | null, never>;
-  updatedAt: ColumnType<Date, Date | null, Date | null>;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
+// ============================================
+// Units (createdAt, updatedAt - DEFAULT в БД)
+// ============================================
 export interface UnitsTable {
   id: string;
   code: string;
@@ -89,20 +111,25 @@ export interface UnitsTable {
   description: string | null;
   sortOrder: number | null;
   isActive: boolean;
-  createdAt: ColumnType<Date, Date | null, never>;
-  updatedAt: ColumnType<Date, Date | null, Date | null>;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
+// ============================================
+// Warehouses (createdAt, updatedAt - DEFAULT в БД)
+// ============================================
 export interface WarehousesTable {
   id: string;
   name: string;
-  isActive: boolean;
   address: string;
   description: string | null;
-  createdAt: ColumnType<Date, Date | null, never>;
-  updatedAt: ColumnType<Date, Date | null, Date | null>;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
+// ============================================
+// Warehouse Settings History
+// ============================================
 export interface WarehouseSettingsHistoryTable {
   id: string;
   warehouseId: string;
@@ -110,14 +137,17 @@ export interface WarehouseSettingsHistoryTable {
   currentOccupancy: number;
   thresholdPercent: number;
   userUpdaterId: string | null;
-  updatedAt: ColumnType<Date, Date | null, Date | null>;
+  updatedAt?: Date;
 }
 
+// ============================================
+// User Warehouses
+// ============================================
 export interface UserWarehousesTable {
   id: string;
   userId: string;
   warehouseId: string;
-  grantedAt: ColumnType<Date, Date | null, never>;
+  grantedAt: Date;
   grantedBy: string;
-  createdAt: ColumnType<Date, Date | null, never>;
+  createdAt?: Date;
 }

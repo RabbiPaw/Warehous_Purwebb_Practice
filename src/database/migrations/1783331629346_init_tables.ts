@@ -4,7 +4,9 @@ import { Database } from '../database.interface';
 export async function up(db: Kysely<Database>): Promise<void> {
   console.log('Creating tables...');
 
+  // ============================================
   // 1. roles
+  // ============================================
   await db.schema
     .createTable('roles')
     .ifNotExists()
@@ -21,7 +23,9 @@ export async function up(db: Kysely<Database>): Promise<void> {
     )
     .execute();
 
+  // ============================================
   // 2. users
+  // ============================================
   await db.schema
     .createTable('users')
     .ifNotExists()
@@ -46,13 +50,14 @@ export async function up(db: Kysely<Database>): Promise<void> {
     )
     .execute();
 
+  // ============================================
   // 3. warehouses
+  // ============================================
   await db.schema
     .createTable('warehouses')
     .ifNotExists()
     .addColumn('id', 'varchar(36)', (col) => col.primaryKey())
     .addColumn('name', 'varchar(100)', (col) => col.notNull())
-	.addColumn('is_active', 'boolean',(col) => col.notNull().defaultTo("true"))
     .addColumn('address', 'text', (col) => col.notNull())
     .addColumn('description', 'text')
     .addColumn('created_at', 'timestamp', (col) =>
@@ -63,7 +68,9 @@ export async function up(db: Kysely<Database>): Promise<void> {
     )
     .execute();
 
+  // ============================================
   // 4. user_warehouses
+  // ============================================
   await db.schema
     .createTable('user_warehouses')
     .ifNotExists()
@@ -86,7 +93,9 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .addUniqueConstraint('user_warehouses_unique', ['user_id', 'warehouse_id'])
     .execute();
 
+  // ============================================
   // 5. units
+  // ============================================
   await db.schema
     .createTable('units')
     .ifNotExists()
@@ -104,7 +113,9 @@ export async function up(db: Kysely<Database>): Promise<void> {
     )
     .execute();
 
+  // ============================================
   // 6. products
+  // ============================================
   await db.schema
     .createTable('products')
     .ifNotExists()
@@ -114,6 +125,7 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .addColumn('unit_id', 'varchar(36)', (col) =>
       col.references('units.id').onDelete('restrict').notNull()
     )
+    .addColumn('is_active', 'boolean', (col) => col.defaultTo(true))
     .addColumn('created_at', 'timestamp', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
@@ -122,15 +134,17 @@ export async function up(db: Kysely<Database>): Promise<void> {
     )
     .execute();
 
-  // 7. suppliers
+  // ============================================
+  // 7. suppliers (исправлено: добавлены DEFAULT)
+  // ============================================
   await db.schema
     .createTable('suppliers')
     .ifNotExists()
     .addColumn('id', 'varchar(36)', (col) => col.primaryKey())
     .addColumn('name', 'varchar(100)', (col) => col.notNull())
-	.addColumn('is_active','boolean', (col) => col.notNull().defaultTo("true"))
     .addColumn('inn', 'varchar(12)', (col) => col.notNull().unique())
     .addColumn('contact', 'text')
+    .addColumn('is_active', 'boolean', (col) => col.defaultTo(true))
     .addColumn('created_at', 'timestamp', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
@@ -139,7 +153,9 @@ export async function up(db: Kysely<Database>): Promise<void> {
     )
     .execute();
 
+  // ============================================
   // 8. distribution_types
+  // ============================================
   await db.schema
     .createTable('distribution_types')
     .ifNotExists()
@@ -157,7 +173,9 @@ export async function up(db: Kysely<Database>): Promise<void> {
     )
     .execute();
 
-  // 9. distributions
+  // ============================================
+  // 9. distributions (исправлено: добавлены DEFAULT)
+  // ============================================
   await db.schema
     .createTable('distributions')
     .ifNotExists()
@@ -191,7 +209,9 @@ export async function up(db: Kysely<Database>): Promise<void> {
     )
     .execute();
 
+  // ============================================
   // 10. warehouse_settings
+  // ============================================
   await db.schema
     .createTable('warehouse_settings')
     .ifNotExists()
