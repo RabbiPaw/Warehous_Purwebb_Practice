@@ -1,13 +1,11 @@
 import { NestFactory } from '@nestjs/core';
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { ValidationPipe} from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import fastifyHelmet from '@fastify/helmet';
 import fastifyCors from '@fastify/cors';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { VALIDATION_PIPE_OPTIONS } from './common/validators/validation-pipe.config';
 import { PinoLogger } from './common/logger/pino-logger.service';
 
@@ -20,32 +18,49 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const logger = app.get(PinoLogger);
 
-  await app.register(fastifyHelmet, {
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: [`'self'`],
-        styleSrc: [`'self'`, `'unsafe-inline'`],
-        imgSrc: [`'self'`, 'data:', 'validator.swagger.io'],
-        scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
-      },
-    },
-  });
-
+  // Fastify plugins
+  await app.register(fastifyHelmet);
   await app.register(fastifyCors, {
     origin: configService.get<string>('CORS_ORIGIN') || '*',
     credentials: true,
   });
 
+  // Validation
   app.useGlobalPipes(new ValidationPipe(VALIDATION_PIPE_OPTIONS));
-
   app.setGlobalPrefix('api');
 
+  // Swagger
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Warehouse Management API')
+    .setDescription('REST API for warehouse management system')
+    .setVersion('1.0.0')
+    .addBearerAuth(
+      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT', in: 'header' },
+      'JWT-auth',
+    )
+    .addTag('auth', 'Authentication endpoints')
+    .addTag('users', 'User management (admin only)')
+    .addTag('products', 'Product management')
+    .addTag('suppliers', 'Supplier management')
+    .addTag('distributions', 'Distribution operations')
+    .addTag('warehouse', 'Warehouse settings')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api/docs', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+      tagsSorter: 'alpha',
+      operationsSorter: 'alpha',
+    },
+  });
+
+  // Start server
   const port = configService.get<number>('PORT') || 3000;
   await app.listen(port, '0.0.0.0');
 
-  logger.log(`Application running on: http://localhost:${port}`);
-  logger.log(`Environment: ${configService.get<string>('NODE_ENV')}`);
-  logger.log(`PostgreSQL: ${configService.get<string>('POSTGRES_HOST')}:${configService.get<string>('POSTGRES_PORT')}`);
+  logger.log(`Server running on: http://localhost:${port}`);
+  logger.log(`Swagger: http://localhost:${port}/api/docs`);
 }
 
 bootstrap();
