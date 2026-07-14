@@ -1,5 +1,3 @@
-import { ColumnType } from 'kysely';
-
 export interface Database {
   users: UsersTable;
   roles: RolesTable;
@@ -31,7 +29,7 @@ export interface UsersTable {
 }
 
 // ============================================
-// Roles (createdAt, updatedAt - DEFAULT в БД)
+// Roles
 // ============================================
 export interface RolesTable {
   id: string;
@@ -44,7 +42,7 @@ export interface RolesTable {
 }
 
 // ============================================
-// Products (createdAt, updatedAt - DEFAULT в БД)
+// Products
 // ============================================
 export interface ProductsTable {
   id: string;
@@ -57,7 +55,7 @@ export interface ProductsTable {
 }
 
 // ============================================
-// Suppliers (createdAt, updatedAt - DEFAULT в БД)
+// Suppliers
 // ============================================
 export interface SuppliersTable {
   id: string;
@@ -70,7 +68,7 @@ export interface SuppliersTable {
 }
 
 // ============================================
-// Distributions (createdAt, updatedAt - DEFAULT в БД)
+// Distributions
 // ============================================
 export interface DistributionsTable {
   id: string;
@@ -88,7 +86,7 @@ export interface DistributionsTable {
 }
 
 // ============================================
-// Distribution Types (createdAt, updatedAt - DEFAULT в БД)
+// Distribution Types
 // ============================================
 export interface DistributionTypesTable {
   id: string;
@@ -102,7 +100,7 @@ export interface DistributionTypesTable {
 }
 
 // ============================================
-// Units (createdAt, updatedAt - DEFAULT в БД)
+// Units
 // ============================================
 export interface UnitsTable {
   id: string;
@@ -116,7 +114,7 @@ export interface UnitsTable {
 }
 
 // ============================================
-// Warehouses (createdAt, updatedAt - DEFAULT в БД)
+// Warehouses
 // ============================================
 export interface WarehousesTable {
   id: string;
