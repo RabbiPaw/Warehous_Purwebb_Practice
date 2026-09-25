@@ -1,0 +1,12 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString } from 'class-validator';
+
+export class UpdateRoleDto {
+  @ApiProperty({
+    example: '550e8400-e29b-41d4-a716-446655440000',
+    description: 'ID новой роли',
+  })
+  @IsString()
+  @IsNotEmpty({ message: 'ID роли обязателен' })
+  roleId: string;
+}

@@ -3,7 +3,6 @@ import { Kysely, sql } from 'kysely';
 import { Database, UsersTable } from '../database.interface';
 import { IUser } from '../../common/interfaces/user.interface';
 
-// Расширенный интерфейс для пользователя с паролем
 export interface IUserWithPassword extends IUser {
   password: string;
 }
@@ -63,7 +62,6 @@ export class UsersRepository {
     return user;
   }
 
-  // ✅ Исправлено: возвращаем IUserWithPassword с паролем
   async findByEmailWithRole(email: string): Promise<IUserWithPassword | null> {
     const user = await this.db
       .selectFrom('users')
@@ -71,7 +69,7 @@ export class UsersRepository {
       .select([
         'users.id',
         'users.email',
-        'users.password',  // ← Явно добавляем password
+        'users.password',
         'users.name',
         'users.surname',
         'users.patronymic',
@@ -90,7 +88,7 @@ export class UsersRepository {
     return {
       id: user.id,
       email: user.email,
-      password: user.password,  // ← Добавляем пароль
+      password: user.password,
       name: user.name,
       surname: user.surname,
       patronymic: user.patronymic,
@@ -133,8 +131,7 @@ export class UsersRepository {
     await this.db
       .updateTable('users')
       .set({ 
-        lastLoginAt: sql`CURRENT_TIMESTAMP`,
-        updatedAt: sql`CURRENT_TIMESTAMP`,
+        lastLoginAt: sql`CURRENT_TIMESTAMP`
       })
       .where('id', '=', id)
       .execute();
@@ -261,7 +258,7 @@ export class UsersRepository {
     }
 
     const countResult = await countQuery.executeTakeFirst();
-    const total = Number((countResult as any)?.count || 0);
+    const total = Number((countResult as any)?.count || 0); // todo: проверить возвращение, обдумать момент
 
     const users: IUser[] = data.map((user) => ({
       id: user.id,

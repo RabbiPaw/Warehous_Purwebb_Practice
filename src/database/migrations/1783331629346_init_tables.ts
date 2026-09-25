@@ -15,10 +15,10 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .addColumn('description', 'text')
     .addColumn('sort_order', 'smallint', (col) => col.defaultTo(0))
     .addColumn('is_active', 'boolean', (col) => col.defaultTo(true))
-    .addColumn('created_at', 'timestamp', (col) =>
+    .addColumn('created_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
-    .addColumn('updated_at', 'timestamp', (col) =>
+    .addColumn('updated_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`)
     )
     .execute();
@@ -39,13 +39,13 @@ export async function up(db: Kysely<Database>): Promise<void> {
       col.references('roles.id').onDelete('set null')
     )
     .addColumn('is_active', 'boolean', (col) => col.defaultTo(true))
-    .addColumn('last_login_at', 'timestamp', (col) =>
+    .addColumn('last_login_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`)
     )
-    .addColumn('created_at', 'timestamp', (col) =>
+    .addColumn('created_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
-    .addColumn('updated_at', 'timestamp', (col) =>
+    .addColumn('updated_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`)
     )
     .execute();
@@ -60,10 +60,10 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .addColumn('name', 'varchar(100)', (col) => col.notNull())
     .addColumn('address', 'text', (col) => col.notNull())
     .addColumn('description', 'text')
-    .addColumn('created_at', 'timestamp', (col) =>
+    .addColumn('created_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
-    .addColumn('updated_at', 'timestamp', (col) =>
+    .addColumn('updated_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`)
     )
     .execute();
@@ -81,13 +81,13 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .addColumn('warehouse_id', 'varchar(36)', (col) =>
       col.references('warehouses.id').onDelete('cascade').notNull()
     )
-    .addColumn('granted_at', 'timestamp', (col) =>
+    .addColumn('granted_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
     .addColumn('granted_by', 'varchar(36)', (col) =>
       col.references('users.id').onDelete('set null')
     )
-    .addColumn('created_at', 'timestamp', (col) =>
+    .addColumn('created_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
     .addUniqueConstraint('user_warehouses_unique', ['user_id', 'warehouse_id'])
@@ -105,10 +105,10 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .addColumn('description', 'text')
     .addColumn('sort_order', 'smallint', (col) => col.defaultTo(0))
     .addColumn('is_active', 'boolean', (col) => col.defaultTo(true))
-    .addColumn('created_at', 'timestamp', (col) =>
+    .addColumn('created_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
-    .addColumn('updated_at', 'timestamp', (col) =>
+    .addColumn('updated_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`)
     )
     .execute();
@@ -126,16 +126,16 @@ export async function up(db: Kysely<Database>): Promise<void> {
       col.references('units.id').onDelete('restrict').notNull()
     )
     .addColumn('is_active', 'boolean', (col) => col.defaultTo(true))
-    .addColumn('created_at', 'timestamp', (col) =>
+    .addColumn('created_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
-    .addColumn('updated_at', 'timestamp', (col) =>
+    .addColumn('updated_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`)
     )
     .execute();
 
   // ============================================
-  // 7. suppliers (исправлено: добавлены DEFAULT)
+  // 7. suppliers
   // ============================================
   await db.schema
     .createTable('suppliers')
@@ -145,10 +145,10 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .addColumn('inn', 'varchar(12)', (col) => col.notNull().unique())
     .addColumn('contact', 'text')
     .addColumn('is_active', 'boolean', (col) => col.defaultTo(true))
-    .addColumn('created_at', 'timestamp', (col) =>
+    .addColumn('created_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
-    .addColumn('updated_at', 'timestamp', (col) =>
+    .addColumn('updated_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`)
     )
     .execute();
@@ -165,10 +165,10 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .addColumn('sign', 'integer', (col) => col.defaultTo(1))
     .addColumn('sort_order', 'smallint', (col) => col.defaultTo(0))
     .addColumn('is_active', 'boolean', (col) => col.defaultTo(true))
-    .addColumn('created_at', 'timestamp', (col) =>
+    .addColumn('created_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
-    .addColumn('updated_at', 'timestamp', (col) =>
+    .addColumn('updated_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`)
     )
     .execute();
@@ -195,16 +195,16 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .addColumn('warehouse_id', 'varchar(36)', (col) =>
       col.references('warehouses.id').onDelete('restrict').notNull()
     )
-    .addColumn('distribution_date', 'timestamp', (col) => col.notNull())
+    .addColumn('distribution_date', 'timestamptz', (col) => col.notNull())
     .addColumn('quantity', 'integer', (col) => col.notNull())
     .addColumn('unit_id', 'varchar(36)', (col) =>
       col.references('units.id').onDelete('restrict').notNull()
     )
     .addColumn('description', 'text')
-    .addColumn('created_at', 'timestamp', (col) =>
+    .addColumn('created_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
-    .addColumn('updated_at', 'timestamp', (col) =>
+    .addColumn('updated_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`)
     )
     .execute();
@@ -225,7 +225,7 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .addColumn('user_updater_id', 'varchar(36)', (col) =>
       col.references('users.id').onDelete('set null')
     )
-    .addColumn('updated_at', 'timestamp', (col) =>
+    .addColumn('updated_at', 'timestamptz', (col) =>
       col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
     )
     .execute();

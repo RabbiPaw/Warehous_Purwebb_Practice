@@ -1,39 +1,29 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude, Expose } from 'class-transformer';
 
+@Exclude()
 export class AuthResponseDto {
-  @ApiProperty({
-    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-    description: 'JWT access token',
-  })
+  @Expose()
+  @ApiProperty({ example: 'eyJhbGciOiJIUzI1NiIs...' })
   accessToken: string;
 
-  @ApiProperty({
-    example: '550e8400-e29b-41d4-a716-446655440000',
-    description: 'User ID',
-  })
+  @Expose()
+  @ApiProperty({ example: '550e8400-e29b-41d4-a716-446655440000' })
   userId: string;
 
-  @ApiProperty({
-    example: 'admin@warehouse.com',
-    description: 'User email',
-  })
+  @Expose()
+  @ApiProperty({ example: 'admin@warehouse.com' })
   email: string;
 
-  @ApiProperty({
-    example: 'Admin',
-    description: 'First name',
-  })
+  @Expose()
+  @ApiProperty({ example: 'Admin' })
   name: string;
 
-  @ApiProperty({
-    example: 'System',
-    description: 'Last name',
-  })
+  @Expose()
+  @ApiProperty({ example: 'System' })
   surname: string;
 
-  @ApiProperty({
-    example: 'Administrator',
-    description: 'Role name',
-  })
+  @Expose()
+  @ApiProperty({ example: 'Administrator' })
   role: string;
 }
